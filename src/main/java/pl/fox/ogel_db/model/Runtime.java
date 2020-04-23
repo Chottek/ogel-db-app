@@ -1,12 +1,11 @@
 package pl.fox.ogel_db.model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @AllArgsConstructor // (Lombok) -> Provides a constructor with all arguments (id, machine_name, datetime and isRunning)
@@ -14,8 +13,10 @@ import java.util.Date;
 @Getter // Provides getters from all variables
 @Setter // Provides setters to all variables
 @Entity // Tells that this class is a table entity
+@EqualsAndHashCode
 @Table(name = "Runtime")
-public class Runtime {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Runtime implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +27,5 @@ public class Runtime {
 
     @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
     private Boolean isrunning;
-
 
 }

@@ -1,5 +1,6 @@
 package pl.fox.ogel_db.controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class RuntimeController {
     public List<Runtime> getRuntimeList(){
         return runtimeRepository.findAll();
     }
+
 
     @GetMapping("/{id}")
     public Runtime get(@PathVariable("id") int id){

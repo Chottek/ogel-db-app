@@ -1,5 +1,6 @@
 package pl.fox.ogel_db.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "Production")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Production {
 
     @Id

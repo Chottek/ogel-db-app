@@ -1,5 +1,6 @@
 package pl.fox.ogel_db.controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,10 +29,10 @@ public class ProductionController {
     }
 
     @GetMapping("/{id}")  // GetMapping for one object, searched by id
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     public Production get(@PathVariable("id") int id){
         return productionRepository.getOne(id);
     }
-
 
 
     @PostConstruct  // Just for checking purposes
