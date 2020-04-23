@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.fox.ogel_db.model.Production;
 import pl.fox.ogel_db.repository.ProductionRepository;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @RestController
@@ -29,6 +30,16 @@ public class ProductionController {
     @GetMapping("/{id}")  // GetMapping for one object, searched by id
     public Production get(@PathVariable("id") int id){
         return productionRepository.getOne(id);
+    }
+
+
+
+    @PostConstruct  // Just for checking purposes
+    public void checkRepository(){
+        if(!productionRepository.findAll().isEmpty())
+            System.out.println("PRODUCT REPOSITORY IS FILLED WITH DATA");
+        else
+            System.err.println("PRODUCT REPOSITORY IS EMPTY!");
     }
 
 }

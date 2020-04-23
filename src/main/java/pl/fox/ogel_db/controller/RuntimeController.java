@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.fox.ogel_db.model.Runtime;
 import pl.fox.ogel_db.repository.RuntimeRepository;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 
 @RestController
@@ -31,4 +32,11 @@ public class RuntimeController {
         return runtimeRepository.getOne(id);
     }
 
+    @PostConstruct   // Just for checking purposes
+    public void checkRepository(){
+        if(!runtimeRepository.findAll().isEmpty())
+            System.out.println("RUNTIME REPOSITORY IS FILLED WITH DATA");
+        else
+            System.err.println("RUNTIME REPOSITORY IS EMPTY!");
+    }
 }
