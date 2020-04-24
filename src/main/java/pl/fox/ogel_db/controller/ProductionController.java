@@ -10,6 +10,7 @@ import pl.fox.ogel_db.repository.ProductionRepository;
 import pl.fox.ogel_db.service.ProductionService;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,14 +30,30 @@ public class ProductionController {
         return service.findAllWithOrder();
     }
 
-    @GetMapping("/{id}")  // GetMapping for one object, searched by id
-    public ResponseEntity<Production> get(@PathVariable("id") int id){
-        Optional<Production> production = service.findById(id);
-        if (production.isPresent())
-            return new ResponseEntity(production, HttpStatus.OK);
+//    @GetMapping("/{id}")  // GetMapping for one object, searched by id
+//    public ResponseEntity<Production> get(@PathVariable("id") int id){
+//        Optional<Production> production = service.findById(id);
+//        if (production.isPresent())
+//            return new ResponseEntity(production, HttpStatus.OK);
+//
+//        return ResponseEntity.notFound().build();
+//    }
 
-        return ResponseEntity.notFound().build();
+    @GetMapping("/list")
+    public List<String> getDistinct(){
+        List<String> names = new ArrayList<>();
+        for (Production p : service.findDistinctByName())
+            if(!names.contains(p.getMachine_name()))
+                 names.add(p.getMachine_name());
+
+        return names;
     }
+
+
+//    @GetMapping("/machines")
+//    public List<Production> getByNameAndValue(@RequestParam(value = "value") String value, @RequestParam(value = "name") String name){
+//        return service.findByVariable(value, name);
+//    }
 
     @RequestMapping(value="/machines", method = RequestMethod.GET)
     public List<Production> getByName(@RequestParam(value="name") String name) {

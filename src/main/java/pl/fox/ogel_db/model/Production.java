@@ -26,13 +26,59 @@ public class Production {
 
     private String machine_name;
     private String variable_name;
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date datetime_from;
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date datetime_to;
 
     @Column(name = "value")
     private Integer value;
 
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getMachine_name() {
+        return machine_name;
+    }
+
+    public void setMachine_name(String machine_name) {
+        this.machine_name = machine_name;
+    }
+
+    public String getVariable_name() {
+        return variable_name;
+    }
+
+    public void setVariable_name(String variable_name) {
+        this.variable_name = variable_name;
+    }
+
+    public Date getDatetime_from() {
+        return datetime_from;
+    }
+
+    public void setDatetime_from(Date datetime_from) {
+        this.datetime_from = datetime_from;
+    }
+
+    public Date getDatetime_to() {
+        return datetime_to;
+    }
+
+    public void setDatetime_to(Date datetime_to) {
+        this.datetime_to = datetime_to;
+    }
+
+    public Integer getValue() {
+        return value;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
 }

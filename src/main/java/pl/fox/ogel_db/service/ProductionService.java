@@ -34,4 +34,12 @@ public class ProductionService {
         return productionRepository.findAllOrderByName();
     }
 
+    public List<Production> findByVariable(String variable, String machine_name){
+        return productionRepository.findByVariable(variable, machine_name);
+    }
+
+    public List<Production> findDistinctByName(){
+        return productionRepository.findDistinctByName();
+    }
+
 }
