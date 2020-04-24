@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class OgelDbApplication {
 
-    private Logger logger = LoggerFactory.getLogger(OgelDbApplication.class);
+//    private Logger logger = LoggerFactory.getLogger(OgelDbApplication.class);
 
     public static void main(String[] args) {
         SpringApplication.run(OgelDbApplication.class, args);

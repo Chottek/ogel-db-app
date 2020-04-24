@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 @AllArgsConstructor // (Lombok) -> Provides a constructor with all arguments (id, machine_name, datetime and isRunning)
@@ -13,10 +12,9 @@ import java.util.Date;
 @Getter // Provides getters from all variables
 @Setter // Provides setters to all variables
 @Entity // Tells that this class is a table entity
-@EqualsAndHashCode
 @Table(name = "Runtime")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Runtime implements Serializable {
+public class Runtime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
