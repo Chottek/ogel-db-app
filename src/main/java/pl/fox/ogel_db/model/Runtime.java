@@ -21,6 +21,8 @@ public class Runtime {
     private Integer id;
 
     private String machine_name;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date datetime;
 
     @Column(nullable = false, columnDefinition = "TINYINT", length = 1)

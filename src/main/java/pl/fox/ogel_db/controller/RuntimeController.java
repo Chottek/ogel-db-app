@@ -38,10 +38,17 @@ public class RuntimeController {
       return ResponseEntity.notFound().build();
     }
 
-    @RequestMapping(value="/machines", method = RequestMethod.GET)
-    public List<Runtime> getByName(@RequestParam(value="name") String name) {
-        return service.findByName(name);
+//    @RequestMapping(value="/machines", method = RequestMethod.GET)
+//    public List<Runtime> getByName(@RequestParam(value="name") String name) {
+//        return service.findByName(name);
+//    }
+
+
+    @GetMapping("/machines/{name}")
+    public List<Runtime> getByNameAndDate(@PathVariable("name") String name, @RequestParam("date") String date){
+        return service.findByNameAndDate(name, date);
     }
+
 
     @PostConstruct   // Just for checking purposes
     public void checkRepository(){

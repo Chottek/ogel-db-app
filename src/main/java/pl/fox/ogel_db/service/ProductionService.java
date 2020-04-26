@@ -18,6 +18,7 @@ public class ProductionService {
         this.productionRepository = productionRepository;
     }
 
+
     public List<Production> findAll(){
         return productionRepository.findAll();
     }
@@ -38,8 +39,11 @@ public class ProductionService {
         return productionRepository.findByVariable(variable, machine_name);
     }
 
-    public List<Production> findDistinctByName(){
-        return productionRepository.findDistinctByName();
+    public List<Production> gfr(String name, String variable, String date){
+        return productionRepository.findByDate(name, variable, date);
     }
+
+
+
 
 }
