@@ -39,7 +39,7 @@ public class ProductionService {
         return productionRepository.findByVariable(variable, machine_name);
     }
 
-    public List<Production> gfr(String name, String variable, String date){
+    public List<Production> findByNameVarDate(String name, String variable, String date){
         return productionRepository.findByDate(name, variable, date);
     }
 

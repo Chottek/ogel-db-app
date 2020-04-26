@@ -63,8 +63,7 @@ public class ProductionController {
 
     @GetMapping("/machines/{name}/{variable}")
     public List<Production> getNameVarDate(@PathVariable(value="name") String name, @PathVariable(value="variable") String variable, @RequestParam(value="date") String date) throws ParseException {
-       System.out.println(date);
-        return service.gfr(name, variable, date);
+        return service.findByNameVarDate(name, variable, date);
     }
 
 
