@@ -11,7 +11,11 @@ export class MachineService {
   constructor(private http: HttpClient) {}
 
   getTotalValueOf(name: string, date: string){
-    return this.http.get('/server/api/production/machines/' + name + '/PRODUCTION?date=' + date);
+    return this.http.get('/server/api/production/machines?date=' + date);
+  }
+
+  getRuntime(date: string){
+    return this.http.get('/server/api/runtime/time?date=' + date);
   }
 
 }
