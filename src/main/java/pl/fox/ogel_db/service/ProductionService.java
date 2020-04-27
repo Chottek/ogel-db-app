@@ -31,10 +31,15 @@ public class ProductionService {
         return productionRepository.findAllOrderByName();
     }
 
+    public List<Production> getByVarDate(String name, String date){
+        return productionRepository.findByDate(name, "PRODUCTION", date);
+    }
+
 
     public List<String> getNames(){
         List<String> temp = new ArrayList<>();
         List<String> distinct = new ArrayList<>();
+
         for(Production p : findAll())
             if(!temp.contains(p.getMachine_name())){
                 temp.add(p.getMachine_name());
@@ -70,7 +75,7 @@ public class ProductionService {
         }
 
         return data;
-     }
+    }
 
     private float countPercentage(int production, int scrap){
         return (float) 100 * (production - scrap) / (production + scrap);
@@ -81,7 +86,6 @@ public class ProductionService {
     }
 
     //TODO: Make new Object classes that contain counted values of each hour gross production (List) ((net production = (gross - scrap) ))
-    //TODO: Make new Object class that contains counted percentage of scrap vs gross production
     //TODO: Make new Object class that contains values of hours (00:05 - 1:00, etc.) til 24:00
     //TODO: Make new Object class that contains Overall Equipment Efficiency
     //TODO: Make new Object class that contains indicator based on average temperature (GREEN/YELLOW/RED)

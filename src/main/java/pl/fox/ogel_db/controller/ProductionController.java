@@ -24,15 +24,6 @@ public class ProductionController {
         return service.findAllWithOrder();
     }
 
-//    @GetMapping("/{id}")  // GetMapping for one object, searched by id
-//    public ResponseEntity<Production> get(@PathVariable("id") int id){
-//        Optional<Production> production = service.findById(id);
-//        if (production.isPresent())
-//            return new ResponseEntity(production, HttpStatus.OK);
-//
-//        return ResponseEntity.notFound().build();
-//    }
-
     @GetMapping("/machines")
     public List<ProductionData> getTotalValueOf(@RequestParam(value="date") String date){
         return service.getTotalValueOf(date);

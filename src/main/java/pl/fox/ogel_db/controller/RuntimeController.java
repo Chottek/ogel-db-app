@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.fox.ogel_db.model.Production;
 import pl.fox.ogel_db.model.Runtime;
+import pl.fox.ogel_db.model.RuntimeData;
 import pl.fox.ogel_db.repository.RuntimeRepository;
 import pl.fox.ogel_db.service.RuntimeService;
 
@@ -56,6 +57,11 @@ public class RuntimeController {
             System.out.println("RUNTIME REPOSITORY IS FILLED WITH DATA");
         else
             System.err.println("RUNTIME REPOSITORY IS EMPTY!");
+    }
+
+    @GetMapping("/time")
+    public List<RuntimeData> getData(@RequestParam("date") String date){
+        return service.getUptime(date);
     }
 
 
