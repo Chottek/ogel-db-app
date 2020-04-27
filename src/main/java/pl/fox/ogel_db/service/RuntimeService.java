@@ -24,16 +24,10 @@ public class RuntimeService {
         this.productionService = productionService;
     }
 
-    public List<Runtime> findAll(){
-        return runtimeRepository.findAll();
-    }
+    public List<Runtime> findAll(){ return runtimeRepository.findAll(); }
 
     public Optional<Runtime> findById(int id) {
         return runtimeRepository.findById(id);
-    }
-
-    public List<Runtime> findByName(String machine_name){
-        return runtimeRepository.findByMachine_name(machine_name);
     }
 
     public List<Runtime> findByNameAndDate(String name, String date){
@@ -48,25 +42,18 @@ public class RuntimeService {
                if(p.getValue() != 0)
                    uptime += 5;
            }
-
-           data.add(new RuntimeData(machine_name, countUpTime(uptime), countDownTime(uptime),
-                   (100 - countDownTimePercentage(uptime)), countDownTimePercentage(uptime) ));
+           data.add(new RuntimeData(machine_name, countTime(uptime, false), countTime(uptime, true),
+                   (100 - countDownTimePercentage(uptime)), countDownTimePercentage(uptime)));
        }
-
        return data;
     }
 
-    private float countUpTime(float uptime){
-        return uptime / 60;
-    }
-
-    private float countDownTime(float uptime){
-        return  24 - (uptime / 60) ;
+    private float countTime(float uptime, boolean down){
+        if(!down) return uptime / 60;
+        return 24 - (uptime / 60);
     }
 
     private float countDownTimePercentage(float uptime){
-        return (100 * countDownTime(uptime)) / 24;
+        return (100 * countTime(uptime, true)) / 24;
     }
-
-    //TODO: Make new Object class that contains calculated downTime Percentage of machine
 }

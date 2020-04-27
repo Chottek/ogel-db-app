@@ -1,6 +1,5 @@
 package pl.fox.ogel_db.model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 

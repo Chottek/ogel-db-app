@@ -18,13 +18,8 @@ public class ProductionService {
         this.productionRepository = productionRepository;
     }
 
-
     public List<Production> findAll(){
         return productionRepository.findAll();
-    }
-
-    public List<Production> findByName(String machine_name){
-        return productionRepository.findByMachine_name(machine_name);
     }
 
     public List<Production> findAllWithOrder(){
@@ -84,11 +79,5 @@ public class ProductionService {
     private int countNetProduction(int production, int scrap){
         return production - (2 * scrap);
     }
-
-    //TODO: Make new Object classes that contain counted values of each hour gross production (List) ((net production = (gross - scrap) ))
-    //TODO: Make new Object class that contains values of hours (00:05 - 1:00, etc.) til 24:00
-    //TODO: Make new Object class that contains Overall Equipment Efficiency
-    //TODO: Make new Object class that contains indicator based on average temperature (GREEN/YELLOW/RED)
-
 
 }
