@@ -12,17 +12,19 @@ export class ReportComponent implements OnInit {
 
   public machineData;
   public runtimeData;
-  public param;
+  private param;
+  public current_date = new Date();
 
   ngOnInit(): void {
-    this.param = this.route.snapshot.queryParams["date"];
+    this.param = this.route.snapshot.queryParams["date"];    // get date parameter value
+    this.current_date = new Date();     // get date for generate mark
 
-    this.getMachineData(this.route.snapshot.params.name, this.param);
-    this.getRuntimeData(this.param);
+    this.getMachineData(this.param);   // get data from
+    this.getRuntimeData(this.param);   // machineService by param
   }
 
-  getMachineData(name: string, date: string){
-    this.machineService.getTotalValueOf(name, date).subscribe(
+  getMachineData(date: string){
+    this.machineService.getTotalValueOf(date).subscribe(
        data => { this.machineData = data},
         err => { console.error(err)},
       () => { console.log("done!")}
@@ -35,6 +37,22 @@ export class ReportComponent implements OnInit {
       err => { console.error(err)},
       () => { console.log("done!")}
     );
+  }
+
+  parseWarning(n : number){  //get number and return warning in string
+    switch(n){
+      case 0: return "GOOD";
+      case 1: return "WARNING";
+      case 2: return "FATAL!";
+    }
+  }
+
+  parseColor(n : number){ //get number and return color for warning
+    switch(n){
+      case 0: return "#008000"; //Hex code for green
+      case 1: return "#FFA500"; //Hex code for orange
+      case 2: return "#FF0000"; //Hex code for red
+    }
   }
 
 

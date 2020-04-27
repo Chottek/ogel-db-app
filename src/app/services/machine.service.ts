@@ -10,11 +10,11 @@ export class MachineService {
 
   constructor(private http: HttpClient) {}
 
-  getTotalValueOf(name: string, date: string){
+  getTotalValueOf(date: string){    // get data from api -> production
     return this.http.get('/server/api/production/machines?date=' + date);
   }
 
-  getRuntime(date: string){
+  getRuntime(date: string){   // get data from api -> runtime
     return this.http.get('/server/api/runtime/time?date=' + date);
   }
 

@@ -1,4 +1,5 @@
-Date: {{machineData[0].date}}<br/>
+<h2 style="text-align: center;">Date: {{machineData[0].date}}<br/></h2>
+
 
 <table style="margin-left: auto; margin-right: auto;">
 <tr>
@@ -8,6 +9,7 @@ Date: {{machineData[0].date}}<br/>
   <td>Net Production:</td>
   <td>Gross To Scrap:</td>
   <td>Average Temperature:</td>
+  <td>Temperature Warning:</td>
   <td>Total Runtime:</td>
   <td>Total Downtime:</td>
   <td>Uptime To Downtime:</td>
@@ -20,8 +22,15 @@ Date: {{machineData[0].date}}<br/>
   <td>{{m.net_production}}</td>
   <td>{{m.gross_percentage.toFixed(3)}}% / {{m.scrap_percentage.toFixed(3)}}%</td>
   <td>{{m.temperature_value.toFixed(2)}} degrees</td>
+  <td [ngStyle]="{color: parseColor(m.temperature_warning)}">{{parseWarning(m.temperature_warning)}}</td>
   <td>{{runtimeData[i].total_runtime.toFixed(2)}}h</td>
   <td>{{runtimeData[i].total_downtime.toFixed(2)}}h</td>
   <td>{{runtimeData[i].runtime_percentage.toFixed(3)}}% / {{runtimeData[i].downtime_percentage.toFixed(3)}}%</td>
 </tr>
 </table>
+
+
+
+<footer style="margin-top: 100px;">
+  <div style="text-align: right; margin-right: 100px;">Generated: {{current_date | date: 'yyyy-MM-dd HH:mm'}}</div>
+</footer>
