@@ -3,11 +3,9 @@ package pl.fox.ogel_db.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.fox.ogel_db.model.Production;
+import pl.fox.ogel_db.model.ProductionData;
 import pl.fox.ogel_db.service.ProductionService;
 
-import javax.annotation.PostConstruct;
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -35,44 +33,9 @@ public class ProductionController {
 //        return ResponseEntity.notFound().build();
 //    }
 
-    @GetMapping("/list")
-    public List<Production> getDistinct(){
-        List<String> temp = new ArrayList<>();
-        List<Production> distinct = new ArrayList<>();
-        for(Production p : service.findAll())
-            if(!temp.contains(p.getMachine_name())){
-                temp.add(p.getMachine_name());
-                distinct.add(p);
-            }
-
-        return distinct;
-    }
-
-
-
-
     @GetMapping("/machines")
-    public List<Production> getByName(@RequestParam(value="name") String name) {
-        return service.findByName(name);
-    }
-
-//    @GetMapping("/machines/{name}/{variable}")
-//    public List<Production> getByNameAndVar(@PathVariable(value="variable") String variable, @PathVariable(value="name") String name){
-//        return service.findByVariable(variable, name);
-//    }
-
-    @GetMapping("/machines/{name}/{variable}")
-    public List<Production> getNameVarDate(@PathVariable(value="name") String name, @PathVariable(value="variable") String variable, @RequestParam(value="date") String date) throws ParseException {
-        return service.findByNameVarDate(name, variable, date);
-    }
-
-
-    @PostConstruct  // Just for checking purposes
-    public void checkRepository(){
-        if(!service.findAll().isEmpty())
-            System.out.println("PRODUCT REPOSITORY IS FILLED WITH DATA");
-        else
-            System.err.println("PRODUCT REPOSITORY IS EMPTY!");
+    public List<ProductionData> getTotalValueOf(@RequestParam(value="date") String date){
+        return service.getTotalValueOf(date);
     }
 
 }

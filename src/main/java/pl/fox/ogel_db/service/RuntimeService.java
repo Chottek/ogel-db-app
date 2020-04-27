@@ -34,4 +34,5 @@ public class RuntimeService {
         return runtimeRepository.findByMachineName(name, date);
     }
 
+    //TODO: Make new Object class that contains calculated downTime Percentage of machine
 }
