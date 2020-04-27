@@ -1,6 +1,6 @@
 package pl.fox.ogel_db.model;
 
-public class RuntimeData {
+public class RuntimeData {   // Object that contains counted values from Runtime table from database
 
     private String machine_name;
     private Float total_runtime;

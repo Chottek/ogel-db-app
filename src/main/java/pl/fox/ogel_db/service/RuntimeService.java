@@ -9,7 +9,6 @@ import pl.fox.ogel_db.repository.RuntimeRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RuntimeService {
@@ -22,12 +21,6 @@ public class RuntimeService {
     public RuntimeService(RuntimeRepository runtimeRepository, ProductionService productionService){
         this.runtimeRepository = runtimeRepository;
         this.productionService = productionService;
-    }
-
-    public List<Runtime> findAll(){ return runtimeRepository.findAll(); }
-
-    public Optional<Runtime> findById(int id) {
-        return runtimeRepository.findById(id);
     }
 
     public List<Runtime> findByNameAndDate(String name, String date){

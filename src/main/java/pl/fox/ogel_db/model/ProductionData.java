@@ -1,6 +1,6 @@
 package pl.fox.ogel_db.model;
 
-public class ProductionData {
+public class ProductionData {   // Object that contains counted values from Production table from database
 
     private String machine_name;
     private Integer production_value;
@@ -9,11 +9,12 @@ public class ProductionData {
     private Float gross_percentage;
     private Float scrap_percentage;
     private Double temperature_value;
+    private Integer temperature_warning;
     private String date;
 
     public ProductionData(String machine_name, Integer production_value, Integer scrap_value,
                           Integer net_production, Float gross_percentage, Float scrap_percentage,
-                            Double temperature_value, String date) {
+                            Double temperature_value, Integer temperature_warning, String date) {
         this.machine_name = machine_name;
         this.production_value = production_value;
         this.scrap_value = scrap_value;
@@ -21,6 +22,7 @@ public class ProductionData {
         this.gross_percentage = gross_percentage;
         this.scrap_percentage = scrap_percentage;
         this.temperature_value = temperature_value;
+        this.temperature_warning = temperature_warning;
         this.date = date;
     }
 
@@ -78,6 +80,14 @@ public class ProductionData {
 
     public void setTemperature_value(Double temperature_value) {
         this.temperature_value = temperature_value;
+    }
+
+    public Integer getTemperature_warning() {
+        return temperature_warning;
+    }
+
+    public void setTemperature_warning(Integer temperature_warning) {
+        this.temperature_warning = temperature_warning;
     }
 
     public String getDate() {
