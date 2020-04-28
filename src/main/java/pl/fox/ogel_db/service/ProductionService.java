@@ -47,7 +47,6 @@ public class ProductionService {
     }
 
     private int countWarning(String machine_name, String date){
-        int value = 0;
         int highest = 0;
         int rowCount = 0;
         boolean row = false;
@@ -57,10 +56,10 @@ public class ProductionService {
             if(p.getValue() > highest)
                 highest = p.getValue();
 
-            if(highest > 85 && highest <= 100)
+            if(p.getValue() > 85 && p.getValue() <= 100)
                 rowCount++;
 
-            if(highest <= 85)
+            if(p.getValue() <= 85)
                 rowCount = 0;
 
             if(rowCount == 3)
@@ -77,7 +76,7 @@ public class ProductionService {
         else if(highest > 100 || moreRow)
             return 2;
 
-        return value;
+        return 0;
     }
 
     public List<ProductionData> getTotalValueOf(String date){     // method to get and count values
