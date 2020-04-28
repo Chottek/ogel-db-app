@@ -16,7 +16,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name = "Production")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) //ignores the specified logical properties in JSON serialization and deserialization, done to avoid exception
 public class Production {
 
     @Id

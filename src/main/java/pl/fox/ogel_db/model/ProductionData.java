@@ -3,20 +3,15 @@ package pl.fox.ogel_db.model;
 public class ProductionData {   // Object that contains counted values from Production table from database
 
     private String machine_name;
-    private Integer production_value;
-    private Integer scrap_value;
     private Integer net_production;
     private Float gross_percentage;
     private Float scrap_percentage;
     private Integer temperature_warning;
     private String date;
 
-    public ProductionData(String machine_name, Integer production_value, Integer scrap_value,
-                          Integer net_production, Float gross_percentage, Float scrap_percentage,
-                          Integer temperature_warning, String date) {
+    public ProductionData(String machine_name, Integer net_production, Float gross_percentage,
+                            Float scrap_percentage, Integer temperature_warning, String date) {
         this.machine_name = machine_name;
-        this.production_value = production_value;
-        this.scrap_value = scrap_value;
         this.net_production = net_production;
         this.gross_percentage = gross_percentage;
         this.scrap_percentage = scrap_percentage;
@@ -30,22 +25,6 @@ public class ProductionData {   // Object that contains counted values from Prod
 
     public void setMachine_name(String machine_name) {
         this.machine_name = machine_name;
-    }
-
-    public Integer getProduction_value() {
-        return production_value;
-    }
-
-    public void setProduction_value(Integer production_value) {
-        this.production_value = production_value;
-    }
-
-    public Integer getScrap_value() {
-        return scrap_value;
-    }
-
-    public void setScrap_value(Integer scrap_value) {
-        this.scrap_value = scrap_value;
     }
 
     public Integer getNet_production() {

@@ -23,4 +23,9 @@ public class ProductionController {
         return service.getTotalValueOf(date);
     }
 
+    @GetMapping("/dates")
+    public List<String> getDates(){
+        return service.getDates();
+    }
+
 }

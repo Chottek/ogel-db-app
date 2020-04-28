@@ -2,6 +2,7 @@ package pl.fox.ogel_db.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import pl.fox.ogel_db.model.OEEData;
 import pl.fox.ogel_db.model.Runtime;
 import pl.fox.ogel_db.model.RuntimeData;
 import pl.fox.ogel_db.service.RuntimeService;
@@ -28,6 +29,11 @@ public class RuntimeController {
     @GetMapping("/time")
     public List<RuntimeData> getData(@RequestParam("date") String date){
         return service.getUptime(date);
+    }
+
+    @GetMapping("/oee")
+    public List<OEEData> getOEE(@RequestParam("date") String date){
+        return service.countOEE(date);
     }
 
 }
