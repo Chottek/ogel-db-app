@@ -1,10 +1,11 @@
 package pl.fox.ogel.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.fox.ogel.model.ProductionEntity;
 import pl.fox.ogel.model.RuntimeDataEntity;
-import pl.fox.ogel.model.RuntimeEntity;
 import pl.fox.ogel.repository.RuntimeRepository;
 
 import java.util.ArrayList;
@@ -18,6 +19,8 @@ public class RuntimeService {
     private RuntimeRepository repository;
     private ProductionService productionService;
 
+    private static final Logger LOG = LoggerFactory.getLogger(RuntimeService.class);
+;
     @Autowired
     public RuntimeService(RuntimeRepository repository, ProductionService productionService) {
         this.repository = repository;
@@ -35,6 +38,7 @@ public class RuntimeService {
                 }
             }
             data.add(new RuntimeDataEntity((float) (100 * value) / (24 * 60 / 5 + value)));
+            LOG.info("Added to RuntimeDataEntity value {} for machine name {}", (float) (100 * value) / (24 * 60 / 5 + value), machineName);
         }
         return data;
     }

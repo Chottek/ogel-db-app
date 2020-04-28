@@ -21,7 +21,7 @@ public class RuntimeController {
         this.service = service;
     }
 
-    @GetMapping()
+    @GetMapping
     public List<RuntimeDataEntity> getCountedDownTime(@RequestParam(name = "date") String date) {
         return service.getDownTime(date);
     }

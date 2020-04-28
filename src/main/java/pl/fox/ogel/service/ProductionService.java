@@ -1,5 +1,7 @@
 package pl.fox.ogel.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.fox.ogel.model.ProductionDataEntity;
@@ -15,6 +17,8 @@ import java.util.TimeZone;
 
 @Service
 public class ProductionService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ProductionService.class);
 
     private ProductionRepository repository;
 
@@ -72,6 +76,11 @@ public class ProductionService {
             data.add(new ProductionDataEntity(machineName, (production - scrap),
                     countScrapPercentage(scrap, production),
                     (100 - countScrapPercentage(scrap, production)), warning));
+
+            LOG.info("Added to list: ProductionDataEntity with values: {}, {}, {}, {}, {}", machineName, (production - scrap),
+                    countScrapPercentage(scrap, production),
+                    (100 - countScrapPercentage(scrap, production)), warning);
+
         }
         return data;
     }
@@ -80,7 +89,7 @@ public class ProductionService {
         return (float) (100 * scrap) / (scrap + gross);
     }
 
-    private int countValue(String machineName, String variable, String date) {
+    private int countValue(String machineName, String variable, String date) { // count values
         int value = 0;
         for (ProductionEntity p : getByMachineName(machineName, variable)) {
             if (dateEqualsTimeStamp(date, p.getDatetimeFrom())) {
@@ -106,6 +115,7 @@ public class ProductionService {
             }
 
             if (p.getValue() > 100) {
+                LOG.info("Machine name: {}, highest Temperature: {}", machine_name, p.getValue());
                 return 2;
             }
 
@@ -125,6 +135,8 @@ public class ProductionService {
                 moreRow = true;
             }
         }
+
+        LOG.info("Machine name: {}, Counted highest temperature: {}", machine_name, highest);
         //return value based on counted values
         if (highest <= 85) {
             return 0;

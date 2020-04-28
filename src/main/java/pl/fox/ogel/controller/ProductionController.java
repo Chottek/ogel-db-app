@@ -21,8 +21,10 @@ public class ProductionController {
         this.service = service;
     }
 
-    @GetMapping(value = "/machines")
+    @GetMapping
     public List<ProductionDataEntity> findByName(@RequestParam(value = "date") String date) {
         return service.getCountedValuesOf(date);
     }
+
+
 }
