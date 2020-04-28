@@ -18,4 +18,12 @@ export class MachineService {
     return this.http.get('/server/api/runtime/time?date=' + date);
   }
 
+  getDates(){    // get dates from api -> production
+    return this.http.get('/server/api/production/dates');
+  }
+
+  getOEE(date: string){
+    return this.http.get('/server/api/runtime/oee?date=' + date);
+  }
+
 }
