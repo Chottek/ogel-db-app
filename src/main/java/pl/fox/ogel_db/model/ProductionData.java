@@ -8,20 +8,18 @@ public class ProductionData {   // Object that contains counted values from Prod
     private Integer net_production;
     private Float gross_percentage;
     private Float scrap_percentage;
-    private Double temperature_value;
     private Integer temperature_warning;
     private String date;
 
     public ProductionData(String machine_name, Integer production_value, Integer scrap_value,
                           Integer net_production, Float gross_percentage, Float scrap_percentage,
-                            Double temperature_value, Integer temperature_warning, String date) {
+                          Integer temperature_warning, String date) {
         this.machine_name = machine_name;
         this.production_value = production_value;
         this.scrap_value = scrap_value;
         this.net_production = net_production;
         this.gross_percentage = gross_percentage;
         this.scrap_percentage = scrap_percentage;
-        this.temperature_value = temperature_value;
         this.temperature_warning = temperature_warning;
         this.date = date;
     }
@@ -69,17 +67,8 @@ public class ProductionData {   // Object that contains counted values from Prod
     public Float getScrap_percentage() {
         return scrap_percentage;
     }
-
     public void setScrap_percentage(Float scrap_percentage) {
         this.scrap_percentage = scrap_percentage;
-    }
-
-    public Double getTemperature_value() {
-        return temperature_value;
-    }
-
-    public void setTemperature_value(Double temperature_value) {
-        this.temperature_value = temperature_value;
     }
 
     public Integer getTemperature_warning() {
