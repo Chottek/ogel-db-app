@@ -99,7 +99,6 @@ public class ProductionService {
         return value;
     }
 
-
     private int countWarning(String machine_name, String date) {  // method to count temperature, returns 0 - good, 1 - warning or 2 - fatal
         int highest = 0;
         int rowCount = 0;
