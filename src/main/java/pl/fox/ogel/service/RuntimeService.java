@@ -28,8 +28,10 @@ public class RuntimeService {
         for (String machineName : productionService.getNames()) {
             for (ProductionEntity p : productionService.findAll()) {
                 if (p.getVariableName().equals("PRODUCTION") &&
-                        productionService.dateEqualsTimeStamp(date, p.getDatetimeFrom()) && p.getValue() == 0)
+                        productionService.dateEqualsTimeStamp(date, p.getDatetimeFrom()) && p.getValue() == 0){
                     value += 5;
+                }
+
             }
             data.add(new RuntimeDataEntity((float) (100 * value) / ( 24 * 60 / 5 + value)));
         }

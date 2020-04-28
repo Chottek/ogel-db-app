@@ -26,11 +26,6 @@ public class ProductionController {
     @Autowired
     public ProductionController(ProductionService service){ this.service = service; }
 
-//    @GetMapping(value = "/machines")
-//    public List<ProductionEntity> findAll(@RequestParam String date) throws ParseException{
-//        return service.findByDate(date);
-//    }
-
     @GetMapping(value = "/machines")
     public List<ProductionDataEntity> findByName(@RequestParam(value = "date") String date){
         return service.getCountedValuesOf(date);
