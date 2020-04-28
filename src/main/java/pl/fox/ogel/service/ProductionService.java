@@ -10,7 +10,6 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -18,6 +17,12 @@ import java.util.TimeZone;
 public class ProductionService {
 
     private ProductionRepository repository;
+
+    private static final String PRODUCTION_NAME = "PRODUCTION";
+    private static final String SCRAP_NAME = "SCRAP";
+    private static final String TEMPERATURE_NAME = "CORE TEMPERATURE";
+    private static final String DATEFORMAT = "yyyy-MM-dd";
+    private static final String TIMEZONE = "UTC";
 
     @Autowired
     public ProductionService(ProductionRepository repository) {
@@ -31,27 +36,9 @@ public class ProductionService {
     public List<String> getNames() {
         List<String> data = new ArrayList<>();
 
-        for (ProductionEntity p : findAll()){
-            if (!data.contains(p.getMachineName())){
-                data.add(p.getMachineName());
-            }
-        }
-        return data;
-    }
-
-    public List<ProductionEntity> findByDate(String date) throws ParseException {
-        List<ProductionEntity> data = new ArrayList<>();
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Date x = sdf.parse(date);
-        var z = sdf.format(x);
-
         for (ProductionEntity p : findAll()) {
-            var y = sdf.format(new Date(p.getDatetimeFrom().getTime()));
-
-            if (y.equals(z)) {
-                data.add(p);
+            if (!data.contains(p.getMachineName())) {
+                data.add(p.getMachineName());
             }
         }
         return data;
@@ -59,8 +46,8 @@ public class ProductionService {
 
     public boolean dateEqualsTimeStamp(String date, Timestamp timestamp) {
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            SimpleDateFormat sdf = new SimpleDateFormat(DATEFORMAT);
+            sdf.setTimeZone(TimeZone.getTimeZone(TIMEZONE));
 
             return sdf.format(sdf.parse(date)).equals(sdf.format(timestamp.getTime()));
         } catch (ParseException pe) {
@@ -78,8 +65,8 @@ public class ProductionService {
         List<ProductionDataEntity> data = new ArrayList<>();
         for (String machineName : getNames()) {
 
-            int production = countValue(machineName, "PRODUCTION", date);
-            int scrap = countValue(machineName, "SCRAP", date);
+            int production = countValue(machineName, PRODUCTION_NAME, date);
+            int scrap = countValue(machineName, SCRAP_NAME, date);
             int warning = countWarning(machineName, date);
 
             data.add(new ProductionDataEntity(machineName, (production - scrap),
@@ -110,7 +97,7 @@ public class ProductionService {
         boolean row = false;
         boolean moreRow = false;
 
-        for (ProductionEntity p : repository.getByMachineNameAndVariableName(machine_name, "CORE TEMPERATURE")) {
+        for (ProductionEntity p : repository.getByMachineNameAndVariableName(machine_name, TEMPERATURE_NAME)) {
             if (!dateEqualsTimeStamp(date, p.getDatetimeFrom()))
                 continue;
 
@@ -146,7 +133,6 @@ public class ProductionService {
         } else if (highest > 100 || moreRow) {
             return 2;
         }
-
 
         return 0;
     }

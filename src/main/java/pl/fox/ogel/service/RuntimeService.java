@@ -13,6 +13,8 @@ import java.util.List;
 @Service
 public class RuntimeService {
 
+    private static final String PRODUCTION_NAME = "PRODUCTION";
+
     private RuntimeRepository repository;
     private ProductionService productionService;
 
@@ -27,19 +29,13 @@ public class RuntimeService {
         int value = 0;
         for (String machineName : productionService.getNames()) {
             for (ProductionEntity p : productionService.findAll()) {
-                if (p.getVariableName().equals("PRODUCTION") &&
-                        productionService.dateEqualsTimeStamp(date, p.getDatetimeFrom()) && p.getValue() == 0){
+                if (p.getVariableName().equals(PRODUCTION_NAME) &&
+                        productionService.dateEqualsTimeStamp(date, p.getDatetimeFrom()) && p.getValue() == 0) {
                     value += 5;
                 }
-
             }
-            data.add(new RuntimeDataEntity((float) (100 * value) / ( 24 * 60 / 5 + value)));
+            data.add(new RuntimeDataEntity((float) (100 * value) / (24 * 60 / 5 + value)));
         }
         return data;
     }
-
-    // up + down = 100% (24h)
-    // down = x
-
-
 }

@@ -17,12 +17,12 @@ public class RuntimeController {
     private RuntimeService service;
 
     @Autowired
-    public RuntimeController(RuntimeService service){
+    public RuntimeController(RuntimeService service) {
         this.service = service;
     }
 
     @GetMapping()
-    public List<RuntimeDataEntity> getCountedDownTime(@RequestParam(name = "date") String date){
+    public List<RuntimeDataEntity> getCountedDownTime(@RequestParam(name = "date") String date) {
         return service.getDownTime(date);
     }
 }
