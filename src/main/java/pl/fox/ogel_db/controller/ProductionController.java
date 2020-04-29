@@ -26,5 +26,4 @@ public class ProductionController {
         return service.getCountedValuesOf(date);
     }
 
-
 }

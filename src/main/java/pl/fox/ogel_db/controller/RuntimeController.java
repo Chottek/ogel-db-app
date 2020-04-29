@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import pl.fox.ogel_db.model.OeeDataEntity;
 import pl.fox.ogel_db.model.RuntimeDataEntity;
 import pl.fox.ogel_db.service.RuntimeService;
 
@@ -24,5 +25,10 @@ public class RuntimeController {
     @GetMapping
     public List<RuntimeDataEntity> getCountedDownTime(@RequestParam(name = "date") String date) {
         return service.getDownTime(date);
+    }
+
+    @GetMapping("/oee")
+    public List<OeeDataEntity> getCountedOee(@RequestParam(name = "date") String date){
+        return service.getCountedOverallEquipmentEfficiency(date);
     }
 }

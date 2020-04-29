@@ -61,7 +61,7 @@ public class ProductionService {
         return false;
     }
 
-    private List<ProductionEntity> getByMachineName(String name, String variable) {
+    public List<ProductionEntity> getByMachineName(String name, String variable) {
         return repository.getByMachineNameAndVariableName(name, variable);
     }
 
@@ -89,7 +89,7 @@ public class ProductionService {
         return (float) (100 * scrap) / (scrap + gross);
     }
 
-    private int countValue(String machineName, String variable, String date) { // count values
+    public int countValue(String machineName, String variable, String date) { // count values
         int value = 0;
         for (ProductionEntity p : getByMachineName(machineName, variable)) {
             if (dateEqualsTimeStamp(date, p.getDatetimeFrom())) {
