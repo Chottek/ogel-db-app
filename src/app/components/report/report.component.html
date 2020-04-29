@@ -1,8 +1,8 @@
-<h2 style="text-align: center;">Date: {{machineData[0].date}}<br/></h2>
-
-<div class="form-group" style="margin-left: 50px; margin-bottom: 50px;">
+<h2 style="text-align: center;">Date: {{this.param}}<br/></h2>
+<div style="text-align: right; margin-right: 100px;">Generated: {{currentDate | date: 'yyyy-MM-dd HH:mm'}}</div>
+<div  style="margin-left: 50px; margin-bottom: 50px;">
   <label>Date: </label>
-  <select class="form-control" #t (change)="redirect(t.value)">
+  <select #t (change)="redirect(t.value)">
     <option value="">Select date</option>
     <option *ngFor="let d of dates"
             [value]="d">
@@ -36,8 +36,25 @@
   <td>{{((oeeData[i].performance * oeeData[i].quality * oeeData[i].availability) / 10000).toFixed(3)}} %</td>
 </tr>
 </table>
+<br/>
+<div style="margin-top: 50px; margin-bottom: 30px; text-align: center">
+  <h2>Hourly net production values:</h2>
+</div>
+<table style="margin-bottom: 100px;">
+  <tr>
+    <td>Hour:</td>
+    <td style="font-weight: bolder;">{{hourlyData[0].machineName}}</td>
+    <td style="font-weight: bolder;">{{hourlyData[24].machineName}}</td>
+    <td style="font-weight: bolder;">{{hourlyData[48].machineName}}</td>
+  </tr>
 
 
-<footer style="margin-top: 100px;">
-  <div style="text-align: right; margin-right: 100px;">Generated: {{currentDate | date: 'yyyy-MM-dd HH:mm'}}</div>
-</footer>
+  <tr *ngFor="let i of numbers">
+    <td>{{i}}</td>
+    <td>{{returnHourlyData(i)}}</td>
+    <td>{{returnHourlyData((i+23))}}</td>
+    <td>{{returnHourlyData((i+47))}}</td>
+  </tr>
+
+</table>
+

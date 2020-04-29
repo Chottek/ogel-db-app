@@ -26,4 +26,8 @@ export class MachineService {
     return this.http.get('/server/api/runtime/oee?date=' + date);
   }
 
+  getHourlyValues(date: string){
+    return this.http.get('/server/api/production/hourly?date=' + date);
+  }
+
 }
