@@ -11,4 +11,6 @@ public interface ProductionRepository extends JpaRepository<ProductionEntity, Lo
 
     List<ProductionEntity> getByMachineNameAndVariableName(String machineName, String variableName);
 
+    List<ProductionEntity> getByMachineName(String machineName);
+
 }

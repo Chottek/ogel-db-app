@@ -24,73 +24,59 @@ public class RuntimeService {
     private ProductionService productionService;
 
     private static final Logger LOG = LoggerFactory.getLogger(RuntimeService.class);
-;
+    ;
+
     @Autowired
     public RuntimeService(RuntimeRepository repository, ProductionService productionService) {
         this.repository = repository;
         this.productionService = productionService;
     }
 
-    public List<RuntimeDataEntity> getDownime(String date) {
+    public List<RuntimeDataEntity> getDownTime(String date) {
         List<RuntimeDataEntity> data = new ArrayList<>();
-        int value = 0;
         for (String machineName : productionService.getNames()) {
-            for (ProductionEntity p : productionService.findAll()) {
-                if (p.getVariableName().equals(PRODUCTION_NAME) &&
-                        productionService.dateEqualsTimeStamp(date, p.getDatetimeFrom()) && p.getValue() != 0) {
-                    value++;
-                }
-            }
-            data.add(new RuntimeDataEntity(countDownTimePercentage(value)));
-            LOG.info("Added to RuntimeDataEntity value {} for machine name {}", countDownTimePercentage(value), machineName);
-        }
-        return data;
-    }
-
-    public List<RuntimeDataEntity> getDownTime(String date){
-        List<RuntimeDataEntity> data = new ArrayList<>();
-        for(String machineName : productionService.getNames()){
             int uptime = 0;
-            for(ProductionEntity p : productionService.getByMachineName(machineName, PRODUCTION_NAME)){
-                if( productionService.dateEqualsTimeStamp(date, p.getDatetimeFrom()) && p.getValue() != 0)
+            for (ProductionEntity p : productionService.getByMachineName(machineName, PRODUCTION_NAME)) {
+                if (productionService.dateEqualsTimeStamp(date, p.getDatetimeFrom()) && p.getValue() != 0)
                     uptime += 5;
             }
             data.add(new RuntimeDataEntity(countDownTimePercentage(uptime)));
+            LOG.info("Added to RuntimeDataEntity value {} for machine name {}", countDownTimePercentage(uptime), machineName);
         }
         return data;
     }
 
-    private float countDownTimePercentage(float uptime){
+    private float countDownTimePercentage(float uptime) {
         return 100 - ((uptime / 60) * 100 / 24);
     }
 
-    public List<OeeDataEntity> getCountedOverallEquipmentEfficiency(String date){
+    public List<OeeDataEntity> getCountedOverallEquipmentEfficiency(String date) {
         List<OeeDataEntity> data = new ArrayList<>();
-        for(String name : productionService.getNames()){
+        for (String name : productionService.getNames()) {
             data.add(new OeeDataEntity(countPerformanceOrQuality(name, date, false),
                     countAvailability(name, date),
-                        countPerformanceOrQuality(name, date, true)));
+                    countPerformanceOrQuality(name, date, true)));
             LOG.info("Added new OeeDataEntity to list with values: {}, {}, {}",
                     countPerformanceOrQuality(name, date, false),
-                        countAvailability(name, date), countPerformanceOrQuality(name, date, true));
+                    countAvailability(name, date), countPerformanceOrQuality(name, date, true));
         }
         return data;
     }
 
-    private float countPerformanceOrQuality(String machineName, String date, boolean quality){
+    private float countPerformanceOrQuality(String machineName, String date, boolean quality) {
         int prodValue = productionService.countValue(machineName, PRODUCTION_NAME, date);
         int scrapValue = productionService.countValue(machineName, SCRAP_NAME, date);
 
-        if(quality)
+        if (quality)
             return (float) (prodValue - 2 * scrapValue) / (prodValue - scrapValue) * 100;
 
         return (float) (prodValue - scrapValue) / (H_PRODUCTION_NORM * 24) * 100;
     }
 
-    private float countAvailability(String name, String date){
+    private float countAvailability(String name, String date) {
         int value = 0;
-        for(ProductionEntity p : productionService.getByMachineName(name, PRODUCTION_NAME)){
-            if(productionService.dateEqualsTimeStamp(date, p.getDatetimeFrom()) && p.getValue() != 0){
+        for (ProductionEntity p : productionService.getByMachineName(name, PRODUCTION_NAME)) {
+            if (productionService.dateEqualsTimeStamp(date, p.getDatetimeFrom()) && p.getValue() != 0) {
                 value++;
             }
         }

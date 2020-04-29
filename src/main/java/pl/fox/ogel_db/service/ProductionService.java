@@ -4,10 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.fox.ogel_db.model.HourlyDataEntity;
 import pl.fox.ogel_db.model.ProductionDataEntity;
 import pl.fox.ogel_db.model.ProductionEntity;
 import pl.fox.ogel_db.repository.ProductionRepository;
-
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,6 +26,7 @@ public class ProductionService {
     private static final String SCRAP_NAME = "SCRAP";
     private static final String TEMPERATURE_NAME = "CORE TEMPERATURE";
     private static final String DATEFORMAT = "yyyy-MM-dd";
+    private static final String TIMEFORMAT = "HH:mm";
     private static final String TIMEZONE = "UTC";
 
     @Autowired
@@ -35,6 +36,16 @@ public class ProductionService {
 
     public List<ProductionEntity> findAll() {
         return repository.findAll();
+    }
+
+    public List<String> getDates() {
+        List<String> dates = new ArrayList<>();
+        for (ProductionEntity p : findAll()) {
+            if (!dates.contains(getStringDate(p.getDatetimeFrom())))
+                dates.add(getStringDate(p.getDatetimeFrom()));
+        }
+        LOG.info("Got list of {} dates -> {} - {}", dates.size(), dates.get(0), dates.get(dates.size() - 1));
+        return dates;
     }
 
     public List<String> getNames() {
@@ -47,6 +58,33 @@ public class ProductionService {
         }
         return data;
     }
+
+    private String getStringDate(Timestamp date) {
+        SimpleDateFormat sdf = new SimpleDateFormat(DATEFORMAT);
+        sdf.setTimeZone(TimeZone.getTimeZone(TIMEZONE));
+
+        return sdf.format(date.getTime());
+    }
+
+    private String getStringTime(Timestamp date) {
+        SimpleDateFormat sdf = new SimpleDateFormat(TIMEFORMAT);
+        sdf.setTimeZone(TimeZone.getTimeZone(TIMEZONE));
+
+        return sdf.format(date.getTime());
+    }
+
+    private boolean hourEqualsTimeStampHour(int n, Timestamp timestamp){
+        SimpleDateFormat sdf = new SimpleDateFormat(TIMEFORMAT);
+        sdf.setTimeZone(TimeZone.getTimeZone(TIMEZONE));
+        return getStringFromHour(n).equals(sdf.format(timestamp.getTime()).split(":")[0]);
+    }
+
+    private String getStringFromHour(int n){
+        if(n < 10) return "0"+n;
+        else return String.valueOf(n);
+    }
+
+
 
     public boolean dateEqualsTimeStamp(String date, Timestamp timestamp) {
         try {
@@ -61,12 +99,43 @@ public class ProductionService {
         return false;
     }
 
+
+    public List<HourlyDataEntity> countHourlyNetProduction(String date) {
+        List<HourlyDataEntity> data = new ArrayList<>();
+        int productionValue;
+        int scrapValue;
+
+        for (String name : getNames()) {
+            for(int i = 0; i < 24; i++){
+                productionValue = 0;
+                scrapValue = 0;
+
+                for (ProductionEntity p : repository.getByMachineName(name)) {
+                    if(dateEqualsTimeStamp(date, p.getDatetimeFrom()) && hourEqualsTimeStampHour(i, p.getDatetimeFrom())){
+                        if(p.getVariableName().equals(PRODUCTION_NAME)){
+                            productionValue += p.getValue();
+                        }
+
+                        if(p.getVariableName().equals(SCRAP_NAME)){
+                            scrapValue += p.getValue();
+                        }
+                    }
+                }
+
+                data.add(new HourlyDataEntity(name, i, productionValue - scrapValue));
+            }
+        }
+        LOG.info("Got List of hourly values in count of {}", data.size());
+        return data;
+    }
+
     public List<ProductionEntity> getByMachineName(String name, String variable) {
         return repository.getByMachineNameAndVariableName(name, variable);
     }
 
     public List<ProductionDataEntity> getCountedValuesOf(String date) {
         List<ProductionDataEntity> data = new ArrayList<>();
+        LOG.info("Got parameter of date: {}", date);
         for (String machineName : getNames()) {
 
             int production = countValue(machineName, PRODUCTION_NAME, date);
@@ -147,4 +216,21 @@ public class ProductionService {
 
         return 0;
     }
+
+    private int parseDateToInt(String date){
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat(DATEFORMAT);
+            sdf.setTimeZone(TimeZone.getTimeZone(TIMEZONE));
+            var x = sdf.parse(sdf.format(date));
+
+            return (int) x.getTime()/1000;
+
+        }catch(ParseException pe){
+            LOG.error("Could not parse date from String!");
+        }
+        return 0;
+    }
+
+    //TODO: Probably better solution is to use predicates to pre-filter results at database side before fetching
+
 }
