@@ -1,4 +1,4 @@
-package pl.fox.ogel.model;
+package pl.fox.ogel_db.model;
 
 public class RuntimeDataEntity {
 

@@ -1,4 +1,4 @@
-package pl.fox.ogel;
+package pl.fox.ogel_db;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

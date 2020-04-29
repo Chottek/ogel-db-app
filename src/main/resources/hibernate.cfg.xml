@@ -6,8 +6,8 @@
   <session-factory>
     <property name="connection.url">jdbc:mysql://localhost:3306/ogel_db</property>
     <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-    <mapping class="pl.fox.ogel.model.ProductionEntity"/>
-    <mapping class="pl.fox.ogel.model.RuntimeEntity"/>
+    <mapping class="pl.fox.ogel_db.model.ProductionEntity"/>
+    <mapping class="pl.fox.ogel_db.model.RuntimeEntity"/>
     <!-- <property name="connection.username"/> -->
     <!-- <property name="connection.password"/> -->
 

@@ -1,10 +1,11 @@
 package pl.fox.ogel_db.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import pl.fox.ogel_db.model.OEEData;
-import pl.fox.ogel_db.model.Runtime;
-import pl.fox.ogel_db.model.RuntimeData;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import pl.fox.ogel_db.model.RuntimeDataEntity;
 import pl.fox.ogel_db.service.RuntimeService;
 
 import java.util.List;
@@ -16,24 +17,12 @@ public class RuntimeController {
     private RuntimeService service;
 
     @Autowired
-    public RuntimeController(RuntimeService service){
+    public RuntimeController(RuntimeService service) {
         this.service = service;
     }
 
-
-    @GetMapping("/machines/{name}")
-    public List<Runtime> getByNameAndDate(@PathVariable("name") String name, @RequestParam("date") String date){
-        return service.findByNameAndDate(name, date);
+    @GetMapping
+    public List<RuntimeDataEntity> getCountedDownTime(@RequestParam(name = "date") String date) {
+        return service.getDownTime(date);
     }
-
-    @GetMapping("/time")
-    public List<RuntimeData> getData(@RequestParam("date") String date){
-        return service.getUptime(date);
-    }
-
-    @GetMapping("/oee")
-    public List<OEEData> getOEE(@RequestParam("date") String date){
-        return service.countOEE(date);
-    }
-
 }
