@@ -28,17 +28,18 @@ public class ProductionService {
     private static final String DATEFORMAT = "yyyy-MM-dd";
     private static final String TIMEFORMAT = "HH:mm";
     private static final String TIMEZONE = "UTC";
+    // made variables to easily find, operate and change values if needed
 
     @Autowired
-    public ProductionService(ProductionRepository repository) {
+    public ProductionService(ProductionRepository repository) {   // injection of repository
         this.repository = repository;
     }
 
-    public List<ProductionEntity> findAll() {
+    public List<ProductionEntity> findAll() {   // method that gets all data from table Production
         return repository.findAll();
     }
 
-    public List<String> getDates() {
+    public List<String> getDates() {   // get list of dates to show in View
         List<String> dates = new ArrayList<>();
         for (ProductionEntity p : findAll()) {
             if (!dates.contains(getStringDate(p.getDatetimeFrom())))
@@ -48,7 +49,7 @@ public class ProductionService {
         return dates;
     }
 
-    public List<String> getNames() {
+    public List<String> getNames() {   // get all names distinct from database
         List<String> data = new ArrayList<>();
 
         for (ProductionEntity p : findAll()) {
@@ -59,34 +60,27 @@ public class ProductionService {
         return data;
     }
 
-    private String getStringDate(Timestamp date) {
+    private String getStringDate(Timestamp date) {   // return Timestamp formatted to given DATEFORMAT
         SimpleDateFormat sdf = new SimpleDateFormat(DATEFORMAT);
         sdf.setTimeZone(TimeZone.getTimeZone(TIMEZONE));
 
         return sdf.format(date.getTime());
     }
 
-    private String getStringTime(Timestamp date) {
-        SimpleDateFormat sdf = new SimpleDateFormat(TIMEFORMAT);
-        sdf.setTimeZone(TimeZone.getTimeZone(TIMEZONE));
-
-        return sdf.format(date.getTime());
-    }
-
-    private boolean hourEqualsTimeStampHour(int n, Timestamp timestamp){
+    private boolean hourEqualsTimeStampHour(int n, Timestamp timestamp){   // check if hour String is equal to hour from Timestamp
         SimpleDateFormat sdf = new SimpleDateFormat(TIMEFORMAT);
         sdf.setTimeZone(TimeZone.getTimeZone(TIMEZONE));
         return getStringFromHour(n).equals(sdf.format(timestamp.getTime()).split(":")[0]);
     }
 
-    private String getStringFromHour(int n){
+    private String getStringFromHour(int n){   // get hour value in string from number (used to iterate through each hour value in database)
         if(n < 10) return "0"+n;
         else return String.valueOf(n);
     }
 
 
 
-    public boolean dateEqualsTimeStamp(String date, Timestamp timestamp) {
+    public boolean dateEqualsTimeStamp(String date, Timestamp timestamp) {   // check if given date is equal to Timestamp from database
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(DATEFORMAT);
             sdf.setTimeZone(TimeZone.getTimeZone(TIMEZONE));
@@ -100,40 +94,41 @@ public class ProductionService {
     }
 
 
-    public List<HourlyDataEntity> countHourlyNetProduction(String date) {
+    public List<HourlyDataEntity> countHourlyNetProduction(String date) {   // count hourly net production
         List<HourlyDataEntity> data = new ArrayList<>();
         int productionValue;
         int scrapValue;
 
-        for (String name : getNames()) {
-            for(int i = 0; i < 24; i++){
+        for (String name : getNames()) {  // for each name
+            for(int i = 0; i < 24; i++){   // iterate 24 times (like 24 hours)
                 productionValue = 0;
                 scrapValue = 0;
 
-                for (ProductionEntity p : repository.getByMachineName(name)) {
+                for (ProductionEntity p : repository.getByMachineName(name)) {  // for each Production entity
                     if(dateEqualsTimeStamp(date, p.getDatetimeFrom()) && hourEqualsTimeStampHour(i, p.getDatetimeFrom())){
+                        // if date given in param is equal to date from database and hour values are equal, proceed
                         if(p.getVariableName().equals(PRODUCTION_NAME)){
-                            productionValue += p.getValue();
+                            productionValue += p.getValue();   // add to production value if variable name is PRODUCTION
                         }
 
                         if(p.getVariableName().equals(SCRAP_NAME)){
-                            scrapValue += p.getValue();
+                            scrapValue += p.getValue();  // add to scrap value if variable name is SCRAP
                         }
                     }
                 }
 
-                data.add(new HourlyDataEntity(name, i, productionValue - scrapValue));
+                data.add(new HourlyDataEntity(name, i, productionValue - scrapValue));   // count value and add data to list
             }
         }
         LOG.info("Got List of hourly values in count of {}", data.size());
-        return data;
+        return data;  // return list of HourlyDataEntity objects
     }
 
     public List<ProductionEntity> getByMachineName(String name, String variable) {
         return repository.getByMachineNameAndVariableName(name, variable);
     }
 
-    public List<ProductionDataEntity> getCountedValuesOf(String date) {
+    public List<ProductionDataEntity> getCountedValuesOf(String date) { // get counted values and put them in list of objects
         List<ProductionDataEntity> data = new ArrayList<>();
         LOG.info("Got parameter of date: {}", date);
         for (String machineName : getNames()) {
@@ -158,7 +153,7 @@ public class ProductionService {
         return (float) (100 * scrap) / (scrap + gross);
     }
 
-    public int countValue(String machineName, String variable, String date) { // count values
+    public int countValue(String machineName, String variable, String date) { // count values of variable in date for machine
         int value = 0;
         for (ProductionEntity p : getByMachineName(machineName, variable)) {
             if (dateEqualsTimeStamp(date, p.getDatetimeFrom())) {
@@ -214,20 +209,6 @@ public class ProductionService {
             return 2;
         }
 
-        return 0;
-    }
-
-    private int parseDateToInt(String date){
-        try{
-            SimpleDateFormat sdf = new SimpleDateFormat(DATEFORMAT);
-            sdf.setTimeZone(TimeZone.getTimeZone(TIMEZONE));
-            var x = sdf.parse(sdf.format(date));
-
-            return (int) x.getTime()/1000;
-
-        }catch(ParseException pe){
-            LOG.error("Could not parse date from String!");
-        }
         return 0;
     }
 

@@ -23,12 +23,12 @@ public class RuntimeController {
     }
 
     @GetMapping
-    public List<RuntimeDataEntity> getCountedDownTime(@RequestParam(name = "date") String date) {
+    public List<RuntimeDataEntity> getCountedDownTime(@RequestParam(name = "date") String date) { // default get mapping with param 'date'
         return service.getDownTime(date);
     }
 
     @GetMapping("/oee")
-    public List<OeeDataEntity> getCountedOee(@RequestParam(name = "date") String date){
-        return service.getCountedOverallEquipmentEfficiency(date);
+    public List<OeeDataEntity> getCountedOee(@RequestParam(name = "date") String date){ // '/api/runtime/oee?date={date}
+        return service.getCountedOverallEquipmentEfficiency(date);      // get Overall Equipment Efficiency data
     }
 }

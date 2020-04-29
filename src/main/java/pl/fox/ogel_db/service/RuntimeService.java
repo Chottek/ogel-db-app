@@ -24,7 +24,7 @@ public class RuntimeService {
     private ProductionService productionService;
 
     private static final Logger LOG = LoggerFactory.getLogger(RuntimeService.class);
-    ;
+
 
     @Autowired
     public RuntimeService(RuntimeRepository repository, ProductionService productionService) {
@@ -32,7 +32,7 @@ public class RuntimeService {
         this.productionService = productionService;
     }
 
-    public List<RuntimeDataEntity> getDownTime(String date) {
+    public List<RuntimeDataEntity> getDownTime(String date) {    // count downtime percentage based on uptime
         List<RuntimeDataEntity> data = new ArrayList<>();
         for (String machineName : productionService.getNames()) {
             int uptime = 0;
@@ -63,14 +63,16 @@ public class RuntimeService {
         return data;
     }
 
+        // count performance if boolean is false, quality if boolean is true
     private float countPerformanceOrQuality(String machineName, String date, boolean quality) {
         int prodValue = productionService.countValue(machineName, PRODUCTION_NAME, date);
         int scrapValue = productionService.countValue(machineName, SCRAP_NAME, date);
 
-        if (quality)
+        if (quality){ // return counted quality if boolean is true
             return (float) (prodValue - 2 * scrapValue) / (prodValue - scrapValue) * 100;
+        }
 
-        return (float) (prodValue - scrapValue) / (H_PRODUCTION_NORM * 24) * 100;
+        return (float) (prodValue - scrapValue) / (H_PRODUCTION_NORM * 24) * 100;  // else return counted performance based on Hourlyy Production Norm
     }
 
     private float countAvailability(String name, String date) {
@@ -80,6 +82,6 @@ public class RuntimeService {
                 value++;
             }
         }
-        return (float) value / (float) (UPTIME_NORM * 60 / 5) * 100;
+        return (float) value / (float) (UPTIME_NORM * 60 / 5) * 100;   // return value based on UPTIME_NORM
     }
 }
