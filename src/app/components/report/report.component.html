@@ -1,7 +1,7 @@
 <h2 style="text-align: center;">Date: {{machineData[0].date}}<br/></h2>
 
-<div class="form-group">
-  <label>Date:</label>
+<div class="form-group" style="margin-left: 50px; margin-bottom: 50px;">
+  <label>Date: </label>
   <select class="form-control" #t (change)="redirect(t.value)">
     <option value="">Select date</option>
     <option *ngFor="let d of dates"
@@ -15,27 +15,29 @@
 <tr>
   <td>Machine Name:</td>
   <td>Net Production:</td>
-  <td>Gross VS Scrap %:</td>
+  <td>Scrap / Gross % :</td>
   <td>Temperature Warning:</td>
-  <td>Uptime VS Downtime %:</td>
-  <td>Performance %:</td>
-  <td>Availability %:</td>
-  <td>Quality %:</td>
+  <td>Downtime % :</td>
+  <td>Performance % :</td>
+  <td>Availability % :</td>
+  <td>Quality % :</td>
+  <td>Overall Equipment Efficiency: </td>
 </tr>
 
 <tr *ngFor="let m of machineData; let i = index">
-  <td style="font-weight: bolder;">{{m.machine_name}}</td>
-  <td>{{m.net_production}}</td>
-  <td>{{m.gross_percentage.toFixed(3)}}% / {{m.scrap_percentage.toFixed(3)}}%</td>
-  <td [ngStyle]="{color: parseColor(m.temperature_warning)}">{{parseWarning(m.temperature_warning)}}</td>
-  <td>{{runtimeData[i].runtime_percentage.toFixed(3)}}% / {{runtimeData[i].downtime_percentage.toFixed(3)}}%</td>
-  <td>{{oeeData[i].performance.toFixed(3)}} %</td>
-  <td>{{oeeData[i].availability.toFixed(3)}} %</td>
-  <td>{{oeeData[i].quality.toFixed(3)}} %</td>
+  <td style="font-weight: bolder;">{{m.machineName}}</td>
+  <td>{{m.netProductionValue}}</td>
+  <td>{{m.scrapPercentage.toFixed(3)}}% / {{m.grossPercentage.toFixed(3)}}%</td>
+  <td [ngStyle]="{color: parseColor(m.warningValue)}">{{parseWarning(m.warningValue)}}</td>
+  <td>{{runtimeData[i].downTimePercentage.toFixed(3)}} %</td>
+  <td>{{oeeData[i].performance.toFixed(3)}}</td>
+  <td>{{oeeData[i].availability.toFixed(3)}}</td>
+  <td>{{oeeData[i].quality.toFixed(3)}}</td>
+  <td>{{((oeeData[i].performance * oeeData[i].quality * oeeData[i].availability) / 10000).toFixed(3)}} %</td>
 </tr>
 </table>
 
 
 <footer style="margin-top: 100px;">
-  <div style="text-align: right; margin-right: 100px;">Generated: {{current_date | date: 'yyyy-MM-dd HH:mm'}}</div>
+  <div style="text-align: right; margin-right: 100px;">Generated: {{currentDate | date: 'yyyy-MM-dd HH:mm'}}</div>
 </footer>
