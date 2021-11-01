@@ -1,0 +1,60 @@
+<h2 style="text-align: center;">Date: {{this.param}}<br/></h2>
+<div style="text-align: right; margin-right: 100px;">Generated: {{currentDate | date: 'yyyy-MM-dd HH:mm'}}</div>
+<div  style="margin-left: 50px; margin-bottom: 50px;">
+  <label>Date: </label>
+  <select #t (change)="redirect(t.value)">
+    <option value="">Select date</option>
+    <option *ngFor="let d of dates"
+            [value]="d">
+      {{d}}
+    </option>
+  </select>
+</div>
+
+<table>
+<tr>
+  <td>Machine Name:</td>
+  <td>Net Production:</td>
+  <td>Scrap / Gross % :</td>
+  <td>Temperature Warning:</td>
+  <td>Downtime % :</td>
+  <td>Performance % :</td>
+  <td>Availability % :</td>
+  <td>Quality % :</td>
+  <td>Overall Equipment Efficiency: </td>
+</tr>
+
+<tr *ngFor="let m of machineData; let i = index">
+  <td style="font-weight: bolder;">{{m.machineName}}</td>
+  <td>{{m.netProductionValue}}</td>
+  <td>{{m.scrapPercentage.toFixed(3)}}% / {{m.grossPercentage.toFixed(3)}}%</td>
+  <td [ngStyle]="{color: parseColor(m.warningValue)}">{{parseWarning(m.warningValue)}}</td>
+  <td>{{runtimeData[i].downTimePercentage.toFixed(3)}} %</td>
+  <td>{{oeeData[i].performance.toFixed(3)}}</td>
+  <td>{{oeeData[i].availability.toFixed(3)}}</td>
+  <td>{{oeeData[i].quality.toFixed(3)}}</td>
+  <td>{{((oeeData[i].performance * oeeData[i].quality * oeeData[i].availability) / 10000).toFixed(3)}} %</td>
+</tr>
+</table>
+<br/>
+<div style="margin-top: 50px; margin-bottom: 30px; text-align: center">
+  <h2>Hourly net production values:</h2>
+</div>
+<table style="margin-bottom: 100px;">
+  <tr>
+    <td>Hour:</td>
+    <td style="font-weight: bolder;">{{hourlyData[0].machineName}}</td>
+    <td style="font-weight: bolder;">{{hourlyData[24].machineName}}</td>
+    <td style="font-weight: bolder;">{{hourlyData[48].machineName}}</td>
+  </tr>
+
+
+  <tr *ngFor="let i of numbers">
+    <td>{{i}}</td>
+    <td>{{returnHourlyData(i)}}</td>
+    <td>{{returnHourlyData((i+23))}}</td>
+    <td>{{returnHourlyData((i+47))}}</td>
+  </tr>
+
+</table>
+
